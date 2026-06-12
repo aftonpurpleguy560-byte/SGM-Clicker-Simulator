@@ -24,6 +24,26 @@ const kadirWorkerBtn = document.getElementById('kadirWorkerBtn');
 const aiAssistantBtn = document.getElementById('aiAssistantBtn');
 const victoryScreen = document.getElementById('victoryScreen');
 
+// 🌟 AUDIO SES SİSTEMİ
+const clickSound = new Audio("https://actions.google.com/sounds/v1/ui/click_on.ogg");
+const bgMusic = new Audio("https://actions.google.com/sounds/v1/science_fiction/ambient_space_machine.ogg");
+
+bgMusic.loop = true;
+bgMusic.volume = 0.15; // Kısık sesli müzik ayarı
+
+let musicStarted = false;
+function startMusic() {
+    if (!musicStarted) {
+        bgMusic.play().catch(e => console.log("Müzik tetiklenemedi:", e));
+        musicStarted = true;
+    }
+}
+
+function playClickSound() {
+    clickSound.currentTime = 0; // Sesi sıfırla ki üst üste hızlıca çalabilsin
+    clickSound.play().catch(e => console.log("Ses çalınamadı:", e));
+}
+
 function saveGame() {
     localStorage.setItem('coins', coins);
     localStorage.setItem('coinsPerClick', coinsPerClick);
@@ -67,6 +87,8 @@ function updateUI() {
 
 function handleInGameClick(e) {
     if (e) e.preventDefault();
+    startMusic(); // İlk tıkta müziği başlatır
+    playClickSound(); // Tıklama sesi
     let multiplier = rebirths === 1 ? 2 : 1;
     coins += (coinsPerClick * multiplier);
     updateUI();
@@ -80,6 +102,8 @@ clickerBtn.addEventListener('click', (e) => {
 
 function handleCheatClick(e) {
     if (e) e.preventDefault();
+    startMusic();
+    playClickSound(); // Hile butonunda da klik sesi
     coins += 15000;
     updateUI();
     saveGame();
@@ -152,4 +176,3 @@ document.addEventListener('touchend', function (e) {
 }, false);
 
 updateUI();
-
