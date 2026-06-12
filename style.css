@@ -100,23 +100,27 @@ header p {
     transform: scale(0.90);
 }
 
+/* 🌟 YENI: SOL ÜSTTE DURAN 50X KÜÇÜK SGM BUTONU */
 .sgm-cheat-btn {
-    margin-top: 15px;
-    background: linear-gradient(135deg, #a855f7, #3b185f);
-    color: white;
-    border: 2px solid #c084fc;
-    padding: 10px 30px;
-    font-size: 1.1rem;
+    position: fixed;
+    top: 5px;
+    left: 5px;
+    z-index: 1000;
+    background: #3b185f;
+    color: #a855f7;
+    border: 1px solid #c084fc;
+    padding: 2px 4px;
+    font-size: 0.55rem; /* İnanılmaz küçük yazı */
     font-weight: bold;
-    border-radius: 8px;
+    border-radius: 4px;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(168, 247, 15, 0.2);
-    transition: transform 0.05s ease;
+    opacity: 0.4; /* Çok göze batmasın diye hafif saydam */
+    transition: opacity 0.2s;
     -webkit-tap-highlight-color: transparent;
 }
 
 .sgm-cheat-btn:active {
-    transform: scale(0.95);
+    opacity: 1;
     background: #6b21a8;
 }
 
@@ -158,7 +162,6 @@ header p {
     transition: background 0.3s;
 }
 
-/* Paramız yetmediğindeki koyu mor stil ayarı */
 .shop-item:has(button:disabled) {
     background: #190a28 !important; 
     border: 1px solid #3b185f;
