@@ -4,139 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SGM Clicker Simulator</title>
-    <style>
-        /* Modern ve Karanlık Tema Tasarımı */
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #121214;
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            user-select: none;
-        }
-
-        header {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        h1 {
-            color: #a855f7; /* Mor renk */
-            margin-bottom: 5px;
-            font-size: 2.5rem;
-            text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
-        }
-
-        /* Oyun Alanı */
-        .game-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin-top: 40px;
-            width: 100%;
-            max-width: 400px;
-        }
-
-        .score-board {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: #e2e8f0;
-        }
-
-        /* Tıklama Butonu */
-        .click-btn {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #a855f7, #6b21a8);
-            border: 5px solid #c084fc;
-            box-shadow: 0 10px 25px rgba(168, 85, 247, 0.4);
-            cursor: pointer;
-            outline: none;
-            transition: transform 0.1s, box-shadow 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-
-        .click-btn:active {
-            transform: scale(0.92);
-            box-shadow: 0 5px 15px rgba(168, 85, 247, 0.6);
-        }
-
-        /* Market / Geliştirme Bölümü */
-        .shop-container {
-            margin-top: 40px;
-            width: 90%;
-            background: #1e1e24;
-            border-radius: 15px;
-            padding: 20px;
-            box-sizing: border-box;
-            border: 1px solid #333;
-        }
-
-        .shop-title {
-            font-size: 1.3rem;
-            color: #a855f7;
-            margin-top: 0;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #333;
-            padding-bottom: 5px;
-        }
-
-        .shop-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #2a2a32;
-            padding: 12px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-        }
-
-        .item-info p {
-            margin: 0;
-            font-size: 1rem;
-        }
-
-        .item-info span {
-            font-size: 0.85rem;
-            color: #94a3b8;
-        }
-
-        .buy-btn {
-            background: #a855f7;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .buy-btn:hover {
-            background: #c084fc;
-        }
-
-        .buy-btn:disabled {
-            background: #4b5563;
-            cursor: not-allowed;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <header>
         <h1>SGM Oyun Alanı</h1>
-        <p>Apple ve Android uyumlu Clicker Simulator</p>
+        <p>Apple ve Android Uyumlu Clicker Simulator</p>
     </header>
 
     <div class="game-container">
@@ -144,7 +18,8 @@
         
         <button class="click-btn" id="clickerBtn">TIKLA!</button>
         
-        <p style="color: #94a3b8; font-size: 0.9rem; margin-top: 15px;" id="cpcDisplay">Tık Başına: +1 Coin</p>
+        <p class="cpc-text" id="cpcDisplay">Tık Başına: +1 Coin</p>
+        <p class="cps-text" id="cpsDisplay">Saniyede: 0 Coin</p>
     </div>
 
     <div class="shop-container">
@@ -160,69 +35,13 @@
 
         <div class="shop-item">
             <div class="item-info">
-                <p>Altın Tıklayıcı</p>
-                <span>Tık gücünü +5 artırır</span>
+                <p>SGM Oto-Bot v1</p>
+                <span>Saniyede +1 otomatik coin kazar</span>
             </div>
-            <button class="buy-btn" id="upgrade2Btn">Fiyat: 200</button>
+            <button class="buy-btn" id="autoclickBtn">Fiyat: 150</button>
         </div>
     </div>
 
-    <script>
-        // Oyun Değişkenleri
-        let coins = 0;
-        let coinsPerClick = 1;
-        
-        let upgrade1Cost = 50;
-        let upgrade2Cost = 200;
-
-        // HTML Elemanlarını Seçme
-        const scoreDisplay = document.getElementById('scoreDisplay');
-        const cpcDisplay = document.getElementById('cpcDisplay');
-        const clickerBtn = document.getElementById('clickerBtn');
-        const upgrade1Btn = document.getElementById('upgrade1Btn');
-        const upgrade2Btn = document.getElementById('upgrade2Btn');
-
-        // Arayüz Güncelleme Fonksiyonu
-        function updateUI() {
-            scoreDisplay.textContent = coins + " Coin";
-            cpcDisplay.textContent = "Tık Başına: +" + coinsPerClick + " Coin";
-            
-            // Buton aktiflik kontrolü (Yeterli para var mı?)
-            upgrade1Btn.disabled = coins < upgrade1Cost;
-            upgrade2Btn.disabled = coins < upgrade2Cost;
-        }
-
-        // Tıklama Olayı
-        clickerBtn.addEventListener('click', () => {
-            coins += coinsPerClick;
-            updateUI();
-        });
-
-        // 1. Geliştirme Satın Alma
-        upgrade1Btn.addEventListener('click', () => {
-            if (coins >= upgrade1Cost) {
-                coins -= upgrade1Cost;
-                coinsPerClick += 1;
-                upgrade1Cost = Math.floor(upgrade1Cost * 1.5); // Fiyat artışı
-                upgrade1Btn.textContent = "Fiyat: " + upgrade1Cost;
-                updateUI();
-            }
-        });
-
-        // 2. Geliştirme Satın Alma
-        upgrade2Btn.addEventListener('click', () => {
-            if (coins >= upgrade2Cost) {
-                coins -= upgrade2Cost;
-                coinsPerClick += 5;
-                upgrade2Cost = Math.floor(upgrade2Cost * 1.6); // Fiyat artışı
-                upgrade2Btn.textContent = "Fiyat: " + upgrade2Cost;
-                updateUI();
-            }
-        });
-
-        // İlk açılışta arayüzü sıfırla
-        updateUI();
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
-
