@@ -8,8 +8,12 @@ body {
     flex-direction: column;
     align-items: center;
     user-select: none;
-    -webkit-user-select: none; /* iOS için yazı seçmeyi engelleme */
-    touch-action: manipulation; /* Çift tıkla zoom bugını çözer */
+    -webkit-user-select: none;
+    touch-action: none; 
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
 }
 
 header {
@@ -21,7 +25,6 @@ h1 {
     color: #a855f7;
     margin-bottom: 5px;
     font-size: 2.2rem;
-    text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
 }
 
 header p {
@@ -35,7 +38,7 @@ header p {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-top: 25px;
+    margin-top: 20px;
     width: 100%;
     max-width: 400px;
 }
@@ -43,14 +46,40 @@ header p {
 .score-board {
     font-size: 2.5rem;
     font-weight: bold;
-    margin-bottom: 15px;
     color: #e2e8f0;
 }
 
-/* Buton Mobil Optimizasyonu */
+/* Rebirth Tasarımları */
+.rebirth-board {
+    font-size: 1.1rem;
+    color: #c084fc;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.rebirth-btn {
+    background: linear-gradient(135deg, #ec4899, #8b5cf6);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 10px rgba(236, 72, 153, 0.3);
+}
+
+.rebirth-btn:disabled {
+    background: #25113e !important;
+    color: #6b469b !important;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+/* Büyük Tıklama Butonu */
 .click-btn {
-    width: 170px;
-    height: 170px;
+    width: 160px;
+    height: 160px;
     border-radius: 50%;
     background: linear-gradient(135deg, #a855f7, #6b21a8);
     border: 5px solid #c084fc;
@@ -64,13 +93,12 @@ header p {
     font-size: 1.4rem;
     font-weight: bold;
     transition: transform 0.05s ease;
-    -webkit-tap-highlight-color: transparent; /* iOS'taki gri arkaplan bugını siler */
+    -webkit-tap-highlight-color: transparent; 
+    touch-action: manipulation;
 }
 
-/* Mobilde tıklandığında anlık tepki versin diye basılı tutma efekti */
 .click-btn:active {
     transform: scale(0.90);
-    box-shadow: 0 5px 15px rgba(168, 85, 247, 0.7);
 }
 
 .cpc-text, .cps-text {
@@ -79,6 +107,7 @@ header p {
     margin: 5px 0 0 0;
 }
 
+/* Market Düzenlemeleri */
 .shop-container {
     margin-top: 25px;
     width: 92%;
@@ -108,17 +137,18 @@ header p {
     padding: 10px 12px;
     border-radius: 10px;
     margin-bottom: 8px;
+    transition: background 0.3s;
 }
 
-.item-info p {
-    margin: 0;
-    font-size: 0.95rem;
-    font-weight: bold;
+/* 🌟 PARAMIZ YETMEDİĞİNDEKİ KOYU MOR TASARIM (BUGÜN İSTEDİĞİN) */
+.shop-item:has(button:disabled) {
+    background: #190a28; /* Çok koyu mor arka plan */
+    border: 1px solid #3b185f;
 }
 
-.item-info span {
-    font-size: 0.8rem;
-    color: #94a3b8;
+.shop-item:has(button:disabled) p, 
+.shop-item:has(button:disabled) span {
+    color: #5c3b80; /* Yazılar da sönük koyu mor olur */
 }
 
 .buy-btn {
@@ -130,11 +160,48 @@ header p {
     font-weight: bold;
     cursor: pointer;
     font-size: 0.85rem;
+    transition: background 0.3s;
 }
 
+/* Paramız yetmeyen butonun koyu mor olması */
 .buy-btn:disabled {
-    background: #4b5563;
-    color: #94a3b8;
+    background: #3b185f !important;
+    color: #7c4cb3 !important;
     cursor: not-allowed;
 }
 
+/* Oyun Bitiş Ekranı */
+.victory-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(18, 18, 20, 0.95);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.victory-screen h2 {
+    color: #ec4899;
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.victory-screen button {
+    background: #a855f7;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-top: 20px;
+    cursor: pointer;
+}
