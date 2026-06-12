@@ -15,7 +15,7 @@ const rebirthBtn = document.getElementById('rebirthBtn');
 const cpcDisplay = document.getElementById('cpcDisplay');
 const cpsDisplay = document.getElementById('cpsDisplay');
 const clickerBtn = document.getElementById('clickerBtn');
-const sgmCheatBtn = document.getElementById('sgmCheatBtn'); // Seçici eklendi
+const sgmCheatBtn = document.getElementById('sgmCheatBtn');
 
 const upgrade1Btn = document.getElementById('upgrade1Btn');
 const autoclickBtn = document.getElementById('autoclickBtn');
@@ -65,7 +65,6 @@ function updateUI() {
     }
 }
 
-// Normal Tıklama
 function handleInGameClick(e) {
     if (e) e.preventDefault();
     let multiplier = rebirths === 1 ? 2 : 1;
@@ -79,7 +78,6 @@ clickerBtn.addEventListener('click', (e) => {
     if (e.pointerType !== '') handleInGameClick(e);
 });
 
-// ⭐ YENİ: SGM Butonuna Basınca +15.000 Coin Veren Fonksiyon (Mobil Uyumlu)
 function handleCheatClick(e) {
     if (e) e.preventDefault();
     coins += 15000;
@@ -92,7 +90,6 @@ sgmCheatBtn.addEventListener('click', (e) => {
     if (e.pointerType !== '') handleCheatClick(e);
 });
 
-// Rebirth Olayı
 rebirthBtn.addEventListener('click', () => {
     if (rebirths === 0 && coins >= 100000) {
         rebirths = 1;
@@ -122,7 +119,6 @@ function resetEverything() {
     location.reload();
 }
 
-// Market Satın Alımları
 upgrade1Btn.addEventListener('click', () => {
     if (coins >= upgrade1Cost) { coins -= upgrade1Cost; coinsPerClick += 1; upgrade1Cost = Math.floor(upgrade1Cost * 1.5); updateUI(); saveGame(); }
 });
@@ -139,7 +135,6 @@ aiAssistantBtn.addEventListener('click', () => {
     if (coins >= aiAssistantCost) { coins -= aiAssistantCost; coinsPerSecond += 100; aiAssistantCost = Math.floor(aiAssistantCost * 1.8); updateUI(); saveGame(); }
 });
 
-// Otomatik Zamanlayıcı
 setInterval(() => {
     if (coinsPerSecond > 0) {
         coins += coinsPerSecond;
@@ -148,7 +143,6 @@ setInterval(() => {
     }
 }, 1000);
 
-// Zoom Engelleri
 document.addEventListener('touchstart', function (e) { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
 let lastTouchEnd = 0;
 document.addEventListener('touchend', function (e) {
@@ -158,3 +152,4 @@ document.addEventListener('touchend', function (e) {
 }, false);
 
 updateUI();
+
