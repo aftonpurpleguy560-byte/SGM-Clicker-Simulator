@@ -1,3 +1,4 @@
+/* --- GENEL SAYFA AYARLARI --- */
 body {
     margin: 0;
     padding: 0;
@@ -8,14 +9,18 @@ body {
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
+    
+    /* Mobilde basılı tutunca metin seçilmesini engeller */
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
+    
     overflow-y: auto; 
     width: 100%;
 }
 
+/* --- BAŞLIK ALANI --- */
 header {
     text-align: center;
     margin-top: 20px;
@@ -34,6 +39,7 @@ header p {
     font-size: 0.9rem;
 }
 
+/* --- OYUN ALANI VE SKORLAR --- */
 .game-container {
     display: flex;
     flex-direction: column;
@@ -57,6 +63,7 @@ header p {
     font-weight: bold;
 }
 
+/* --- REBIRTH BUTONU --- */
 .rebirth-btn {
     background: linear-gradient(135deg, #ec4899, #8b5cf6);
     color: white;
@@ -77,6 +84,7 @@ header p {
     cursor: not-allowed;
 }
 
+/* --- ANA TIKLAMA BUTONU --- */
 .click-btn {
     width: 160px;
     height: 160px;
@@ -100,28 +108,42 @@ header p {
     transform: scale(0.90);
 }
 
-/* 🌟 YENI: SOL ÜSTTE DURAN 50X KÜÇÜK SGM BUTONU */
+/* 🌟 GİZLİ SGM WATERMARK HİLE BUTONU (50X KÜÇÜK VE SİLİK) */
 .sgm-cheat-btn {
     position: fixed;
-    top: 5px;
-    left: 5px;
+    top: 10px;
+    left: 10px;
     z-index: 1000;
-    background: #3b185f;
-    color: #a855f7;
-    border: 1px solid #c084fc;
-    padding: 2px 4px;
-    font-size: 0.55rem; /* İnanılmaz küçük yazı */
+    
+    /* Buton görüntüsünü tamamen sıfırladık */
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    padding: 0 !important;
+    
+    /* Koyu gri, minicik ve gizli bir yazı yaptık */
+    color: #475569; 
+    font-size: 0.65rem;
     font-weight: bold;
-    border-radius: 4px;
+    font-family: sans-serif;
+    letter-spacing: 0.5px;
+    
+    /* Arka planda erimesi için transparanlık (opaklık) verdik */
+    opacity: 0.3; 
     cursor: pointer;
-    opacity: 0.4; /* Çok göze batmasın diye hafif saydam */
-    transition: opacity 0.2s;
+    
+    /* Mobilde tıklarken arkada çıkan mavi gölgeyi engeller */
     -webkit-tap-highlight-color: transparent;
 }
 
+/* Basıldığında kutu açılmayacak, sadece yazı çok hafif parlayacak */
 .sgm-cheat-btn:active {
-    opacity: 1;
-    background: #6b21a8;
+    opacity: 0.6;
+    color: #64748b;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 .cpc-text, .cps-text {
@@ -130,6 +152,7 @@ header p {
     margin: 5px 0 0 0;
 }
 
+/* --- MARKET (UPGRADES) ALANI --- */
 .shop-container {
     margin-top: 25px;
     width: 92%;
@@ -162,6 +185,7 @@ header p {
     transition: background 0.3s;
 }
 
+/* Paramız yetmediğinde tüm satırın koyu mor ve sönük olma efekti */
 .shop-item:has(button:disabled) {
     background: #190a28 !important; 
     border: 1px solid #3b185f;
@@ -172,6 +196,7 @@ header p {
     color: #5c3b80 !important; 
 }
 
+/* --- SATIN ALMA BUTONLARI --- */
 .buy-btn {
     background: #a855f7;
     color: white;
@@ -185,12 +210,14 @@ header p {
     -webkit-tap-highlight-color: transparent;
 }
 
+/* Paramız yetmeyen butonun tasarımı */
 .buy-btn:disabled {
     background: #3b185f !important;
     color: #7c4cb3 !important;
     cursor: not-allowed;
 }
 
+/* --- OYUN BİTİŞ (VICTORY) EKRANI --- */
 .victory-screen {
     position: fixed;
     top: 0;
