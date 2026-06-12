@@ -24,52 +24,36 @@ const kadirWorkerBtn = document.getElementById('kadirWorkerBtn');
 const aiAssistantBtn = document.getElementById('aiAssistantBtn');
 const victoryScreen = document.getElementById('victoryScreen');
 
-// 🌟 REBIRTH FİYAT LİSTESİ (1'den 10'a Kadar)
+// 🌟 REBIRTH FİYAT LİSTESİ
 const rebirthCosts = {
-    0: 25000,   // 1. Rebirth için gereken (25K)
-    1: 50000,   // 2. Rebirth için gereken (50K)
-    2: 75000,   // 3. Rebirth için gereken (75K)
-    3: 100000,  // 4. Rebirth için gereken (100K)
-    4: 125000,  // 5. Rebirth için gereken (125K)
-    5: 150000,  // 6. Rebirth için gereken (150K)
-    6: 175000,  // 7. Rebirth için gereken (175K)
-    7: 200000,  // 8. Rebirth için gereken (200K)
-    8: 225000,  // 9. Rebirth için gereken (225K)
-    9: 250000   // 10. Rebirth (Oyunu Bitirme) için gereken (250K)
+    0: 25000,   // 1. Rebirth (25K)
+    1: 50000,   // 2. Rebirth (50K)
+    2: 75000,   // 3. Rebirth (75K)
+    3: 100000,  // 4. Rebirth (100K)
+    4: 125000,  // 5. Rebirth (125K)
+    5: 150000,  // 6. Rebirth (150K)
+    6: 175000,  // 7. Rebirth (175K)
+    7: 200000,  // 8. Rebirth (200K)
+    8: 225000,  // 9. Rebirth (225K)
+    9: 250000   // 10. Rebirth (250K)
 };
-
-// 🌟 AUDIO SES MOTORU AYARLARI
-let bgMusic = null;
-let musicStarted = false;
-
-function startMusicAndSounds() {
-    if (!musicStarted) {
-        bgMusic = new Audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
-        bgMusic.loop = true;
-        bgMusic.volume = 0.10; // Arka plan müziği tam %10 ses seviyesinde
-        
-        bgMusic.play().then(() => {
-            musicStarted = true;
-        }).catch(e => console.log("Müzik engellendi:", e));
-    }
-}
 
 // Tıklama İçin Çıtır Ses Efekti
 function playClickSound() {
     try {
         let clickSound = new Audio("https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav");
-        clickSound.volume = 0.4;
+        clickSound.volume = 0.5;
         clickSound.play();
     } catch (e) {
         console.log("Ses hatası:", e);
     }
 }
 
-// Rebirth Atma Anı İçin Farklı Destansı Ses Efekti
+// Rebirth Anı İçin Farklı Destansı Ses Efekti
 function playRebirthSound() {
     try {
         let rebirthSound = new Audio("https://actions.google.com/sounds/v1/science_fiction/alien_creature_teleport.ogg");
-        rebirthSound.volume = 0.6;
+        rebirthSound.volume = 0.7;
         rebirthSound.play();
     } catch (e) {
         console.log("Rebirth ses hatası:", e);
@@ -92,7 +76,6 @@ function updateUI() {
     scoreDisplay.textContent = Math.floor(coins) + " Coin";
     rebirthDisplay.textContent = "Rebirth: " + rebirths;
     
-    // Her Rebirth tık gücünü +1 kat daha artırır (Örn: 3 Rebirth varsa kazanç 4'le çarpılır)
     let multiplier = rebirths + 1;
     cpcDisplay.textContent = "Tık Başına: +" + (coinsPerClick * multiplier) + " Coin (x" + multiplier + ")";
     cpsDisplay.textContent = "Saniyede: +" + coinsPerSecond + " Coin";
@@ -109,7 +92,6 @@ function updateUI() {
     kadirWorkerBtn.disabled = coins < kadirWorkerCost;
     aiAssistantBtn.disabled = coins < aiAssistantCost;
 
-    // Rebirth Buton Yazısı ve Kontrolü
     if (rebirths < 10) {
         let currentCost = rebirthCosts[rebirths];
         let nextRebirthNumber = rebirths + 1;
@@ -130,8 +112,7 @@ function updateUI() {
 // Ana Buton Tıklama
 function handleInGameClick(e) {
     if (e) e.preventDefault();
-    startMusicAndSounds(); 
-    playClickSound();      
+    playClickSound(); // Sadece tıklama sesi çalışır
     
     let multiplier = rebirths + 1;
     coins += (coinsPerClick * multiplier);
@@ -144,13 +125,12 @@ clickerBtn.addEventListener('click', (e) => {
     if (e.pointerType !== '') handleInGameClick(e);
 });
 
-// Sol Üstteki Gizli SGM Butonu (Artık 50K Veriyor)
+// Sol Üstteki Gizli SGM Watermark Butonu (50K Verir)
 function handleCheatClick(e) {
     if (e) e.preventDefault();
-    startMusicAndSounds();
-    playClickSound();      
+    playClickSound(); // Hile butonuna da sadece çıtır tık sesi verdik
     
-    coins += 50000; // 15k yerine 50k coin eklemesi yapıldı
+    coins += 50000;
     updateUI();
     saveGame();
 }
@@ -160,20 +140,18 @@ sgmCheatBtn.addEventListener('click', (e) => {
     if (e.pointerType !== '') handleCheatClick(e);
 });
 
-// Rebirth Satın Alma İşlemi
+// Rebirth İşlemi
 rebirthBtn.addEventListener('click', () => {
     if (rebirths < 10) {
         let currentCost = rebirthCosts[rebirths];
         if (coins >= currentCost) {
-            playRebirthSound(); // Rebirth'e özel ses efekti çalıyor
+            playRebirthSound(); // Sadece Rebirth atıldığında tetiklenen özel ses
             rebirths += 1;
             
             if (rebirths === 10) {
-                // 10. Rebirth yapıldıysa oyun biter
                 saveGame();
                 victoryScreen.style.display = 'flex';
             } else {
-                // 10'dan küçükse sadece ilerlemeyi sıfırla ve katlayıcıyı ver
                 resetProgressOnRebirth();
             }
         }
@@ -198,7 +176,7 @@ function resetEverything() {
     location.reload();
 }
 
-// Market Satın Almaları
+// Market İşlemleri
 upgrade1Btn.addEventListener('click', () => {
     if (coins >= upgrade1Cost) { coins -= upgrade1Cost; coinsPerClick += 1; upgrade1Cost = Math.floor(upgrade1Cost * 1.5); updateUI(); saveGame(); }
 });
@@ -215,7 +193,7 @@ aiAssistantBtn.addEventListener('click', () => {
     if (coins >= aiAssistantCost) { coins -= aiAssistantCost; coinsPerSecond += 100; aiAssistantCost = Math.floor(aiAssistantCost * 1.8); updateUI(); saveGame(); }
 });
 
-// Otomatik Üretim
+// Otomatik Kazanç Zamanlayıcısı
 setInterval(() => {
     if (coinsPerSecond > 0) {
         coins += coinsPerSecond;
