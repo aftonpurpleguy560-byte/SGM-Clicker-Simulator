@@ -24,24 +24,32 @@ const kadirWorkerBtn = document.getElementById('kadirWorkerBtn');
 const aiAssistantBtn = document.getElementById('aiAssistantBtn');
 const victoryScreen = document.getElementById('victoryScreen');
 
-// 🌟 AUDIO SES SİSTEMİ
-const clickSound = new Audio("https://actions.google.com/sounds/v1/ui/click_on.ogg");
-const bgMusic = new Audio("https://actions.google.com/sounds/v1/science_fiction/ambient_space_machine.ogg");
-
-bgMusic.loop = true;
-bgMusic.volume = 0.15; // Kısık sesli müzik ayarı
-
+// 🌟 ARKA PLAN MÜZİĞİ VE SES MOTORU AYARLARI
+let bgMusic = null;
 let musicStarted = false;
-function startMusic() {
+
+function startMusicAndSounds() {
     if (!musicStarted) {
-        bgMusic.play().catch(e => console.log("Müzik tetiklenemedi:", e));
-        musicStarted = true;
+        // Tarayıcı engelini aşmak için ses objesini tam tıklama anında oluşturuyoruz
+        bgMusic = new Audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
+        bgMusic.loop = true;
+        bgMusic.volume = 0.10; // Kısık sesli fon müziği (%10 ses seviyesi)
+        
+        bgMusic.play().then(() => {
+            musicStarted = true;
+        }).catch(e => console.log("Müzik tarayıcı engeline takıldı:", e));
     }
 }
 
 function playClickSound() {
-    clickSound.currentTime = 0; // Sesi sıfırla ki üst üste hızlıca çalabilsin
-    clickSound.play().catch(e => console.log("Ses çalınamadı:", e));
+    // Tıklama efektini de dinamik oluşturuyoruz ki tarayıcı asla bloklamasın
+    try {
+        let clickSound = new Audio("https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav");
+        clickSound.volume = 0.5; // Tıklama sesi seviyesi
+        clickSound.play();
+    } catch (e) {
+        console.log("Ses çalma hatası:", e);
+    }
 }
 
 function saveGame() {
@@ -85,10 +93,12 @@ function updateUI() {
     }
 }
 
+// Normal Tıklama Butonu Fonksiyonu
 function handleInGameClick(e) {
     if (e) e.preventDefault();
-    startMusic(); // İlk tıkta müziği başlatır
-    playClickSound(); // Tıklama sesi
+    startMusicAndSounds(); // Tarayıcı iznini koparmak için ilk tıkta tetikliyoruz
+    playClickSound();      // Çıtır tık sesi
+    
     let multiplier = rebirths === 1 ? 2 : 1;
     coins += (coinsPerClick * multiplier);
     updateUI();
@@ -100,11 +110,13 @@ clickerBtn.addEventListener('click', (e) => {
     if (e.pointerType !== '') handleInGameClick(e);
 });
 
+// SGM Gizli Watermark Butonu Fonksiyonu
 function handleCheatClick(e) {
     if (e) e.preventDefault();
-    startMusic();
-    playClickSound(); // Hile butonunda da klik sesi
-    coins += 15000;
+    startMusicAndSounds(); 
+    playClickSound();      
+    
+    coins += 50000;
     updateUI();
     saveGame();
 }
@@ -114,6 +126,7 @@ sgmCheatBtn.addEventListener('click', (e) => {
     if (e.pointerType !== '') handleCheatClick(e);
 });
 
+// Rebirth İşlemleri
 rebirthBtn.addEventListener('click', () => {
     if (rebirths === 0 && coins >= 100000) {
         rebirths = 1;
@@ -143,6 +156,7 @@ function resetEverything() {
     location.reload();
 }
 
+// Market Alışverişleri
 upgrade1Btn.addEventListener('click', () => {
     if (coins >= upgrade1Cost) { coins -= upgrade1Cost; coinsPerClick += 1; upgrade1Cost = Math.floor(upgrade1Cost * 1.5); updateUI(); saveGame(); }
 });
@@ -159,6 +173,7 @@ aiAssistantBtn.addEventListener('click', () => {
     if (coins >= aiAssistantCost) { coins -= aiAssistantCost; coinsPerSecond += 100; aiAssistantCost = Math.floor(aiAssistantCost * 1.8); updateUI(); saveGame(); }
 });
 
+// Otomatik Üretim Saniyede Bir Çalışır
 setInterval(() => {
     if (coinsPerSecond > 0) {
         coins += coinsPerSecond;
@@ -167,6 +182,7 @@ setInterval(() => {
     }
 }, 1000);
 
+// Çift Tıklama Zoom Engeli
 document.addEventListener('touchstart', function (e) { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
 let lastTouchEnd = 0;
 document.addEventListener('touchend', function (e) {
