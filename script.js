@@ -1,4 +1,4 @@
-let coins = Number(localStorage.getItem('coins')) || 0;
+llet coins = Number(localStorage.getItem('coins')) || 0;
 let coinsPerClick = Number(localStorage.getItem('coinsPerClick')) || 1;
 let coinsPerSecond = Number(localStorage.getItem('coinsPerSecond')) || 0;
 let rebirths = Number(localStorage.getItem('rebirths')) || 0;
@@ -38,25 +38,31 @@ const rebirthCosts = {
     9: 250000   // 10. Rebirth (250K)
 };
 
-// Tıklama İçin Çıtır Ses Efekti
-function playClickSound() {
+// 🌟 TARAYICI ENGELİNİ DELEN YAPAY SES MOTORU (WEB AUDIO API)
+function playOneSecondClickSound() {
     try {
-        let clickSound = new Audio("https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav");
-        clickSound.volume = 0.5;
-        clickSound.play();
+        // Tarayıcının kendi ses merkezini başlatıyoruz
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const ctx = new AudioContext();
+        
+        // Ses dalgası üreticisi (Oscillators)
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        
+        osc.type = 'sine'; // Çıtır ve yumuşak bir ses dalgası
+        osc.frequency.setValueAtTime(600, ctx.currentTime); // Sesin inceliği (600Hz tam klik sesi)
+        
+        // Sesin tam 0.1 saniyede çıtırca kesilip bitmesi için ayar (1sn'yi geçmez, şişme yapmaz)
+        gain.gain.setValueAtTime(0.3, ctx.currentTime); // Ses yüksekliği
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+        
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        
+        osc.start();
+        osc.stop(ctx.currentTime + 0.1); // Tam tık anında çalar ve durur
     } catch (e) {
-        console.log("Ses hatası:", e);
-    }
-}
-
-// Rebirth Anı İçin Farklı Destansı Ses Efekti
-function playRebirthSound() {
-    try {
-        let rebirthSound = new Audio("https://actions.google.com/sounds/v1/science_fiction/alien_creature_teleport.ogg");
-        rebirthSound.volume = 0.7;
-        rebirthSound.play();
-    } catch (e) {
-        console.log("Rebirth ses hatası:", e);
+        console.log("Ses motoru başlatılamadı:", e);
     }
 }
 
@@ -112,7 +118,7 @@ function updateUI() {
 // Ana Buton Tıklama
 function handleInGameClick(e) {
     if (e) e.preventDefault();
-    playClickSound(); // Sadece tıklama sesi çalışır
+    playOneSecondClickSound(); // Yerel ses motoru tetikleniyor
     
     let multiplier = rebirths + 1;
     coins += (coinsPerClick * multiplier);
@@ -125,10 +131,10 @@ clickerBtn.addEventListener('click', (e) => {
     if (e.pointerType !== '') handleInGameClick(e);
 });
 
-// Sol Üstteki Gizli SGM Watermark Butonu (50K Verir)
+// Sol Üstteki Gizli SGM Watermark Butonu
 function handleCheatClick(e) {
     if (e) e.preventDefault();
-    playClickSound(); // Hile butonuna da sadece çıtır tık sesi verdik
+    playOneSecondClickSound(); 
     
     coins += 50000;
     updateUI();
@@ -140,12 +146,11 @@ sgmCheatBtn.addEventListener('click', (e) => {
     if (e.pointerType !== '') handleCheatClick(e);
 });
 
-// Rebirth İşlemi
+// Rebirth İşlemi (Sessiz)
 rebirthBtn.addEventListener('click', () => {
     if (rebirths < 10) {
         let currentCost = rebirthCosts[rebirths];
         if (coins >= currentCost) {
-            playRebirthSound(); // Sadece Rebirth atıldığında tetiklenen özel ses
             rebirths += 1;
             
             if (rebirths === 10) {
@@ -193,7 +198,7 @@ aiAssistantBtn.addEventListener('click', () => {
     if (coins >= aiAssistantCost) { coins -= aiAssistantCost; coinsPerSecond += 100; aiAssistantCost = Math.floor(aiAssistantCost * 1.8); updateUI(); saveGame(); }
 });
 
-// Otomatik Kazanç Zamanlayıcısı
+// Otomatik Kazanç
 setInterval(() => {
     if (coinsPerSecond > 0) {
         coins += coinsPerSecond;
