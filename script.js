@@ -15,6 +15,7 @@ const rebirthBtn = document.getElementById('rebirthBtn');
 const cpcDisplay = document.getElementById('cpcDisplay');
 const cpsDisplay = document.getElementById('cpsDisplay');
 const clickerBtn = document.getElementById('clickerBtn');
+const sgmCheatBtn = document.getElementById('sgmCheatBtn'); // Seçici eklendi
 
 const upgrade1Btn = document.getElementById('upgrade1Btn');
 const autoclickBtn = document.getElementById('autoclickBtn');
@@ -47,14 +48,12 @@ function updateUI() {
     kadirWorkerBtn.textContent = "Fiyat: " + kadirWorkerCost;
     aiAssistantBtn.textContent = "Fiyat: " + aiAssistantCost;
 
-    // Market Kilit Kontrolleri
     upgrade1Btn.disabled = coins < upgrade1Cost;
     autoclickBtn.disabled = coins < autoclickCost;
     upgrade2Btn.disabled = coins < upgrade2Cost;
     kadirWorkerBtn.disabled = coins < kadirWorkerCost;
     aiAssistantBtn.disabled = coins < aiAssistantCost;
 
-    // Rebirth Buton Kontrolü
     if (rebirths === 0) {
         rebirthBtn.textContent = "Rebirth At (100K)";
         rebirthBtn.disabled = coins < 100000;
@@ -66,10 +65,9 @@ function updateUI() {
     }
 }
 
-// Tıklama İşlemi
+// Normal Tıklama
 function handleInGameClick(e) {
     if (e) e.preventDefault();
-    // Eğer 1 Rebirth varsa tık kazancı 2 katına çıkar
     let multiplier = rebirths === 1 ? 2 : 1;
     coins += (coinsPerClick * multiplier);
     updateUI();
@@ -81,21 +79,31 @@ clickerBtn.addEventListener('click', (e) => {
     if (e.pointerType !== '') handleInGameClick(e);
 });
 
-// Rebirth Buton Tetiklemesi
+// ⭐ YENİ: SGM Butonuna Basınca +15.000 Coin Veren Fonksiyon (Mobil Uyumlu)
+function handleCheatClick(e) {
+    if (e) e.preventDefault();
+    coins += 15000;
+    updateUI();
+    saveGame();
+}
+
+sgmCheatBtn.addEventListener('touchstart', handleCheatClick, {passive: false});
+sgmCheatBtn.addEventListener('click', (e) => {
+    if (e.pointerType !== '') handleCheatClick(e);
+});
+
+// Rebirth Olayı
 rebirthBtn.addEventListener('click', () => {
     if (rebirths === 0 && coins >= 100000) {
-        // 1. Rebirth Atılıyor
         rebirths = 1;
         resetProgressOnRebirth();
     } else if (rebirths === 1 && coins >= 1000000) {
-        // 2. Rebirth ve OYUN BİTTİ!
         rebirths = 2;
         saveGame();
         victoryScreen.style.display = 'flex';
     }
 });
 
-// Rebirth olunca her şeyi sıfırla ama Rebirth sayısını tut
 function resetProgressOnRebirth() {
     coins = 0;
     coinsPerClick = 1;
@@ -109,13 +117,12 @@ function resetProgressOnRebirth() {
     saveGame();
 }
 
-// Oyunu Tamamen Sıfırlama (Kazanma ekranındaki buton için)
 function resetEverything() {
     localStorage.clear();
     location.reload();
 }
 
-// --- MARKET SATIN ALMA OLAYLARI ---
+// Market Satın Alımları
 upgrade1Btn.addEventListener('click', () => {
     if (coins >= upgrade1Cost) { coins -= upgrade1Cost; coinsPerClick += 1; upgrade1Cost = Math.floor(upgrade1Cost * 1.5); updateUI(); saveGame(); }
 });
@@ -141,7 +148,7 @@ setInterval(() => {
     }
 }, 1000);
 
-// Çift Tıklama Zoom Engeli (Kesin Çözüm)
+// Zoom Engelleri
 document.addEventListener('touchstart', function (e) { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
 let lastTouchEnd = 0;
 document.addEventListener('touchend', function (e) {
