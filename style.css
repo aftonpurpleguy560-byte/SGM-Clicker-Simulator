@@ -1,3 +1,4 @@
+/* Genel Sayfa Ayarları */
 body {
     margin: 0;
     padding: 0;
@@ -7,13 +8,17 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-height: 100vh;
+    
+    /* Seçmeyi engelle ama kaydırmaya izin ver */
     user-select: none;
     -webkit-user-select: none;
-    touch-action: none; 
-    position: fixed;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    
+    /* Buradaki fixed kuralını kaldırdık, artık aşağısı kayacak! */
+    overflow-y: auto; 
     width: 100%;
-    height: 100%;
-    overflow-y: auto;
 }
 
 header {
@@ -67,6 +72,7 @@ header p {
     cursor: pointer;
     margin-bottom: 15px;
     box-shadow: 0 4px 10px rgba(236, 72, 153, 0.3);
+    -webkit-tap-highlight-color: transparent;
 }
 
 .rebirth-btn:disabled {
@@ -94,7 +100,6 @@ header p {
     font-weight: bold;
     transition: transform 0.05s ease;
     -webkit-tap-highlight-color: transparent; 
-    touch-action: manipulation;
 }
 
 .click-btn:active {
@@ -117,7 +122,7 @@ header p {
     padding: 15px;
     box-sizing: border-box;
     border: 1px solid #333;
-    margin-bottom: 40px;
+    margin-bottom: 50px; /* Alttan boşluk bıraktık ki en son item rahat gözüksün */
 }
 
 .shop-title {
@@ -140,15 +145,15 @@ header p {
     transition: background 0.3s;
 }
 
-/* 🌟 PARAMIZ YETMEDİĞİNDEKİ KOYU MOR TASARIM (BUGÜN İSTEDİĞİN) */
+/* Paramız yetmediğindeki koyu mor tasarım */
 .shop-item:has(button:disabled) {
-    background: #190a28; /* Çok koyu mor arka plan */
+    background: #190a28; 
     border: 1px solid #3b185f;
 }
 
 .shop-item:has(button:disabled) p, 
 .shop-item:has(button:disabled) span {
-    color: #5c3b80; /* Yazılar da sönük koyu mor olur */
+    color: #5c3b80; 
 }
 
 .buy-btn {
@@ -161,9 +166,9 @@ header p {
     cursor: pointer;
     font-size: 0.85rem;
     transition: background 0.3s;
+    -webkit-tap-highlight-color: transparent;
 }
 
-/* Paramız yetmeyen butonun koyu mor olması */
 .buy-btn:disabled {
     background: #3b185f !important;
     color: #7c4cb3 !important;
@@ -205,3 +210,4 @@ header p {
     margin-top: 20px;
     cursor: pointer;
 }
+
