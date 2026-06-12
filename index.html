@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SGM Clicker Simulator</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -15,7 +15,6 @@
 
     <div class="game-container">
         <div class="score-board" id="scoreDisplay">0 Coin</div>
-        
         <button class="click-btn" id="clickerBtn">TIKLA!</button>
         
         <p class="cpc-text" id="cpcDisplay">Tık Başına: +1 Coin</p>
@@ -39,6 +38,30 @@
                 <span>Saniyede +1 otomatik coin kazar</span>
             </div>
             <button class="buy-btn" id="autoclickBtn">Fiyat: 150</button>
+        </div>
+
+        <div class="shop-item">
+            <div class="item-info">
+                <p>Makro Tıklayıcı</p>
+                <span>Tık gücünü +10 artırır</span>
+            </div>
+            <button class="buy-btn" id="upgrade2Btn">Fiyat: 800</button>
+        </div>
+
+        <div class="shop-item">
+            <div class="item-info">
+                <p>Kadir'in İşçileri</p>
+                <span>Saniyede +15 otomatik coin kazar</span>
+            </div>
+            <button class="buy-btn" id="kadirWorkerBtn">Fiyat: 3000</button>
+        </div>
+
+        <div class="shop-item" style="border: 1px solid #a855f7;">
+            <div class="item-info">
+                <p style="color: #c084fc;">⚡ Yapay Zeka Asistanı</p>
+                <span>Saniyede +100 otomatik coin kazar!</span>
+            </div>
+            <button class="buy-btn" id="aiAssistantBtn" style="background: linear-gradient(135deg, #a855f7, #6b21a8);">Fiyat: 15000</button>
         </div>
     </div>
 
