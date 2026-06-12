@@ -8,6 +8,13 @@
 </head>
 <body>
 
+    <div id="victoryScreen" class="victory-screen" style="display: none;">
+        <h2>🎉 OYUN BİTTİ! 🎉</h2>
+        <p>SGM Clicker Simulator'ı Tamamen Bitirdin!</p>
+        <p>2. Rebirth'e ulaştın ve gerçek bir efsane oldun.</p>
+        <button onclick="resetEverything()">Sıfırla ve Yeniden Başla</button>
+    </div>
+
     <header>
         <h1>SGM Oyun Alanı</h1>
         <p>Apple ve Android Uyumlu Clicker Simulator</p>
@@ -15,6 +22,10 @@
 
     <div class="game-container">
         <div class="score-board" id="scoreDisplay">0 Coin</div>
+        
+        <div class="rebirth-board" id="rebirthDisplay">Rebirth: 0</div>
+        <button class="rebirth-btn" id="rebirthBtn" disabled>Rebirth At (100K)</button>
+
         <button class="click-btn" id="clickerBtn">TIKLA!</button>
         
         <p class="cpc-text" id="cpcDisplay">Tık Başına: +1 Coin</p>
@@ -56,12 +67,12 @@
             <button class="buy-btn" id="kadirWorkerBtn">Fiyat: 3000</button>
         </div>
 
-        <div class="shop-item" style="border: 1px solid #a855f7;">
+        <div class="shop-item">
             <div class="item-info">
-                <p style="color: #c084fc;">⚡ Yapay Zeka Asistanı</p>
-                <span>Saniyede +100 otomatik coin kazar!</span>
+                <p>⚡ Yapay Zeka Asistanı</p>
+                <span>Saniyede +100 otomatik coin kazar</span>
             </div>
-            <button class="buy-btn" id="aiAssistantBtn" style="background: linear-gradient(135deg, #a855f7, #6b21a8);">Fiyat: 15000</button>
+            <button class="buy-btn" id="aiAssistantBtn">Fiyat: 15000</button>
         </div>
     </div>
 
